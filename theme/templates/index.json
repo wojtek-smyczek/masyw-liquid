@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "description": {
+      "type": "description",
+      "settings": {}
+    }
+  },
+  "order": ["description"]
+}

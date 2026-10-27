@@ -1,0 +1,44 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "marquee_text": "MASYW-MASYW-MASYW-MASYW-"
+      },
+      "blocks": {
+        "contact": {
+          "type": "column",
+          "settings": {
+            "title": "CONTACT",
+            "link_1_label": "48999111888",
+            "link_1_url": "/pages/contact",
+            "link_2_label": "hello@masyw-objects.com",
+            "link_2_url": "/pages/contact"
+          }
+        },
+        "info": {
+          "type": "column",
+          "settings": {
+            "title": "INFO",
+            "link_1_label": "ABOUT",
+            "link_1_url": "/pages/about"
+          }
+        },
+        "socials": {
+          "type": "column",
+          "settings": {
+            "title": "SOCIALS",
+            "link_1_label": "INSTAGRAM",
+            "link_1_url": "https://instagram.com",
+            "link_2_label": "FACEBOOK",
+            "link_2_url": "https://facebook.com"
+          }
+        }
+      },
+      "block_order": ["contact", "info", "socials"]
+    }
+  },
+  "order": ["footer"]
+}
