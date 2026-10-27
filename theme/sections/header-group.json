@@ -1,0 +1,41 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_text": "smyczek & szopa",
+        "menu_label": "MENU",
+        "close_label": "SHUT ME UP"
+      },
+      "blocks": {
+        "products": {
+          "type": "products_link",
+          "settings": {
+            "label": "Objects.",
+            "mobile_label": "Products"
+          }
+        },
+        "contact": {
+          "type": "link",
+          "settings": {
+            "label": "Contact.",
+            "mobile_label": "Contact",
+            "url": "/pages/contact"
+          }
+        },
+        "about": {
+          "type": "link",
+          "settings": {
+            "label": "About.",
+            "mobile_label": "About",
+            "url": "/pages/about"
+          }
+        }
+      },
+      "block_order": ["products", "contact", "about"]
+    }
+  },
+  "order": ["header"]
+}

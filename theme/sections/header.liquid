@@ -1,0 +1,119 @@
+<script src="{{ 'header.js' | asset_url }}" defer></script>
+
+<masyw-header>
+  <nav class="fixed top-0 left-0 z-500 flex w-full items-center justify-between p-3 text-white">
+    <a
+      class="relative z-50 cursor-pointer text-2xl tracking-tight transition-all duration-200 hover:scale-105 md:text-2xl"
+      href="{{ routes.root_url }}"
+    >
+      {{- section.settings.logo_text -}}
+    </a>
+
+    <div class="hidden gap-8 md:flex">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          if block.type == 'products_link'
+            assign href = routes.root_url | append: '#products'
+          else
+            assign href = block.settings.url
+          endif
+        -%}
+        <a
+          href="{{ href }}"
+          class="link-masyw-desktop"
+          {{ block.shopify_attributes }}
+        >
+          {{- block.settings.label -}}
+        </a>
+      {%- endfor -%}
+    </div>
+
+    <button
+      type="button"
+      class="link-masyw relative z-50 md:hidden"
+      aria-expanded="false"
+      aria-controls="MobileMenu"
+      data-menu-toggle
+      data-label-open="{{ section.settings.menu_label | escape }}"
+      data-label-close="{{ section.settings.close_label | escape }}"
+    >
+      {{- section.settings.menu_label -}}
+    </button>
+
+    <div
+      id="MobileMenu"
+      class="bg-masyw-dark absolute top-0 left-0 flex h-screen w-full flex-col justify-center"
+      data-menu-panel
+      hidden
+    >
+      {%- for block in section.blocks -%}
+        {%- liquid
+          if block.type == 'products_link'
+            assign href = routes.root_url | append: '#products'
+          else
+            assign href = block.settings.url
+          endif
+        -%}
+        <a
+          href="{{ href }}"
+          class="link-masyw"
+        >
+          {{- block.settings.mobile_label -}}
+        </a>
+      {%- endfor -%}
+    </div>
+  </nav>
+</masyw-header>
+
+{% schema %}
+{
+  "name": "Header",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "smyczek & szopa"
+    },
+    {
+      "type": "text",
+      "id": "menu_label",
+      "label": "Mobile menu button",
+      "default": "MENU"
+    },
+    {
+      "type": "text",
+      "id": "close_label",
+      "label": "Mobile menu close button",
+      "default": "SHUT ME UP"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "products_link",
+      "name": "Products link",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Desktop label", "default": "Objects." },
+        { "type": "text", "id": "mobile_label", "label": "Mobile label", "default": "Products" },
+        {
+          "type": "paragraph",
+          "content": "Scrolls to the Featured products section on the home page."
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Desktop label" },
+        { "type": "text", "id": "mobile_label", "label": "Mobile label" },
+        { "type": "url", "id": "url", "label": "URL" }
+      ]
+    }
+  ]
+}
+{% endschema %}

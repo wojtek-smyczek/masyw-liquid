@@ -3,7 +3,14 @@
     "description": {
       "type": "description",
       "settings": {}
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "frontpage",
+        "products_to_show": 12
+      }
     }
   },
-  "order": ["description"]
+  "order": ["description", "featured-products"]
 }

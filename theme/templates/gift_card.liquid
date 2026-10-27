@@ -1,0 +1,17 @@
+<section class="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-white p-8 text-center text-black">
+  <h1 class="text-5xl tracking-tighter uppercase">{{ shop.name }}</h1>
+  <p class="text-2xl">{{ gift_card.balance | money_with_currency }}</p>
+
+  {%- if gift_card.enabled == false or gift_card.expired -%}
+    <p class="product-masyw">EXPIRED</p>
+  {%- elsif gift_card.expires_on -%}
+    <p class="product-masyw">VALID UNTIL {{ gift_card.expires_on | date: '%d.%m.%Y' }}</p>
+  {%- endif -%}
+
+  <p class="font-mono text-xl tracking-widest">{{ gift_card.code | format_code }}</p>
+
+  <div class="flex gap-6">
+    <a href="{{ shop.url }}" class="link-masyw-desktop">SHOP</a>
+    <a href="#" onclick="window.print(); return false;" class="link-masyw-desktop">PRINT</a>
+  </div>
+</section>

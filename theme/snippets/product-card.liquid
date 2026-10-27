@@ -1,0 +1,57 @@
+{% doc %}
+  Product tile used in product grids. Products tagged `coming-soon`
+  get a blurred image and "COMING SOON" in place of the price.
+
+  @param {product} [product] - Product to render; omit to render a placeholder
+  @param {number} [placeholder_index] - Placeholder image variant (1-6) when no product
+
+  @example
+  {% render 'product-card', product: product %}
+{% enddoc %}
+
+{%- liquid
+  assign coming_soon = false
+  if product.tags contains 'coming-soon'
+    assign coming_soon = true
+  endif
+
+  assign image_class = 'absolute inset-0 h-full w-full object-cover'
+  if coming_soon
+    assign image_class = image_class | append: ' blur-2xl'
+  endif
+-%}
+
+<a
+  href="{{ product.url | default: '#' }}"
+  class="group flex cursor-pointer flex-col gap-1"
+>
+  <div class="relative aspect-square w-full overflow-hidden">
+    {%- if product.featured_media -%}
+      {{
+        product.featured_media
+        | image_url: width: 1500
+        | image_tag:
+          class: image_class,
+          alt: product.title,
+          widths: '400, 600, 800, 1000, 1500',
+          sizes: '(min-width: 768px) 33vw, 100vw',
+          loading: 'lazy'
+      }}
+    {%- else -%}
+      {%- assign placeholder = placeholder_index | default: 1 | prepend: 'product-' -%}
+      {{ placeholder | placeholder_svg_tag: image_class }}
+    {%- endif -%}
+  </div>
+  <div class="flex flex-col justify-between border-black">
+    <span class="product-masyw">{{ product.title | default: 'PRODUCT' }}</span>
+    <span class="product-masyw">
+      {%- if coming_soon -%}
+        COMING SOON
+      {%- elsif product -%}
+        {{ product.price | money_with_currency }}
+      {%- else -%}
+        {{ 10000 | money_with_currency }}
+      {%- endif -%}
+    </span>
+  </div>
+</a>
