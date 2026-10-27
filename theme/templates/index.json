@@ -1,5 +1,11 @@
 {
   "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "playback_rate": 50
+      }
+    },
     "description": {
       "type": "description",
       "settings": {}
@@ -12,5 +18,5 @@
       }
     }
   },
-  "order": ["description", "featured-products"]
+  "order": ["hero", "description", "featured-products"]
 }
