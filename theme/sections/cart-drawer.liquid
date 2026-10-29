@@ -1,0 +1,42 @@
+<script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
+
+<masyw-cart-drawer
+  data-section-id="{{ section.id }}"
+  data-error-message="{{ 'cart.error' | t | escape }}"
+>
+  <div
+    class="fixed inset-0 z-600"
+    data-cart-drawer
+    hidden
+  >
+    <div
+      class="absolute inset-0 bg-black/50"
+      data-cart-close
+    ></div>
+    <div
+      class="bg-masyw-dark absolute top-0 right-0 flex h-full w-full max-w-md flex-col gap-6 p-3 text-white"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ 'cart.title' | t }}"
+    >
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl tracking-tight">{{ 'cart.title' | t }}</h2>
+        <button
+          type="button"
+          class="cursor-pointer"
+          aria-label="{{ 'cart.close' | t }}"
+          data-cart-close
+        >
+          [X]
+        </button>
+      </div>
+      {% render 'cart-contents' %}
+    </div>
+  </div>
+</masyw-cart-drawer>
+
+{% schema %}
+{
+  "name": "Cart drawer"
+}
+{% endschema %}

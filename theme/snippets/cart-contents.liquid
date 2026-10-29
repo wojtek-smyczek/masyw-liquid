@@ -1,0 +1,127 @@
+{% doc %}
+  Cart line items, subtotal and checkout button. Uses the global `cart`.
+  Rendered by the cart drawer (re-rendered via the Section Rendering API)
+  and by the /cart page. Quantity links work without JavaScript; the drawer
+  intercepts them via `data-cart-change`.
+
+  @example
+  {% render 'cart-contents' %}
+{% enddoc %}
+
+<div
+  class="flex min-h-0 grow flex-col gap-6"
+  data-cart-contents
+  data-item-count="{{ cart.item_count }}"
+>
+  {%- if cart.item_count > 0 -%}
+    <ul class="flex min-h-0 grow flex-col gap-6 overflow-y-auto">
+      {%- for item in cart.items -%}
+        <li class="grid grid-cols-[6rem_1fr] gap-3">
+          <a
+            href="{{ item.url }}"
+            class="relative aspect-square w-24 overflow-hidden"
+            tabindex="-1"
+          >
+            {%- if item.image -%}
+              {{
+                item.image
+                | image_url: width: 300
+                | image_tag:
+                  class: 'absolute inset-0 h-full w-full object-cover',
+                  alt: item.product.title,
+                  widths: '150, 300',
+                  sizes: '6rem',
+                  loading: 'lazy'
+              }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'absolute inset-0 h-full w-full object-cover' }}
+            {%- endif -%}
+          </a>
+
+          <div class="flex flex-col gap-1">
+            <a
+              href="{{ item.url }}"
+              class="link-masyw-desktop"
+            >
+              {{- item.product.title -}}
+            </a>
+            {%- unless item.product.has_only_default_variant -%}
+              <span class="text-gray-500">{{ item.variant.title | upcase }}</span>
+            {%- endunless -%}
+            <span>{{ item.final_line_price | money_with_currency }}</span>
+
+            <div class="flex items-center gap-3">
+              <a
+                href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity={{ item.quantity | minus: 1 }}"
+                class="cursor-pointer"
+                aria-label="{{ 'cart.decrease' | t }}"
+                data-cart-change
+                data-line="{{ forloop.index }}"
+                data-quantity="{{ item.quantity | minus: 1 }}"
+              >
+                [-]
+              </a>
+              <span>{{ item.quantity }}</span>
+              <a
+                href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity={{ item.quantity | plus: 1 }}"
+                class="cursor-pointer"
+                aria-label="{{ 'cart.increase' | t }}"
+                data-cart-change
+                data-line="{{ forloop.index }}"
+                data-quantity="{{ item.quantity | plus: 1 }}"
+              >
+                [+]
+              </a>
+              <a
+                href="{{ item.url_to_remove }}"
+                class="product-masyw ml-auto cursor-pointer"
+                data-cart-change
+                data-line="{{ forloop.index }}"
+                data-quantity="0"
+              >
+                {{- 'cart.remove' | t -}}
+              </a>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <div class="flex flex-col gap-3 border-t border-white/20 pt-3">
+      <div class="flex justify-between">
+        <span class="text-gray-500">{{ 'cart.subtotal' | t }}</span>
+        <span>{{ cart.total_price | money_with_currency }}</span>
+      </div>
+      <p class="text-sm text-gray-500">{{ 'cart.taxes_and_shipping' | t }}</p>
+      <form
+        action="{{ routes.cart_url }}"
+        method="post"
+      >
+        <button
+          type="submit"
+          name="checkout"
+          class="link-masyw-mobile w-full text-left"
+        >
+          {{- 'cart.checkout' | t -}}
+        </button>
+      </form>
+    </div>
+  {%- else -%}
+    <div class="flex grow flex-col justify-center gap-3">
+      <p class="text-2xl">{{ 'cart.empty' | t }}</p>
+      <a
+        href="{{ routes.root_url }}#products"
+        class="link-masyw-desktop"
+        data-cart-close
+      >
+        {{- 'cart.continue' | t -}}
+      </a>
+    </div>
+  {%- endif -%}
+
+  <p
+    class="text-red-500"
+    role="alert"
+    data-cart-error
+  ></p>
+</div>

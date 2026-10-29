@@ -1,0 +1,15 @@
+<section class="bg-masyw-dark flex min-h-screen w-full flex-col gap-6 px-3 pt-20 pb-10 text-white">
+  <h1 class="text-5xl tracking-tighter md:text-7xl">{{ 'cart.title' | t }}</h1>
+  <div class="flex max-w-2xl grow flex-col">
+    {% render 'cart-contents' %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "enabled_on": {
+    "templates": ["cart"]
+  }
+}
+{% endschema %}

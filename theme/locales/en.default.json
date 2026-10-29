@@ -8,5 +8,19 @@
       "added": "ADDED TO CART",
       "close": "Back to products"
     }
+  },
+  "cart": {
+    "title": "CART",
+    "link": "Cart",
+    "empty": "YOUR CART IS EMPTY",
+    "continue": "Objects.",
+    "subtotal": "SUBTOTAL",
+    "taxes_and_shipping": "Taxes and shipping calculated at checkout.",
+    "checkout": "CHECKOUT",
+    "remove": "REMOVE",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "close": "Close cart",
+    "error": "Something went wrong. Please try again."
   }
 }
