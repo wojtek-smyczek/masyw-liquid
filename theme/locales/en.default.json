@@ -22,5 +22,17 @@
     "increase": "Increase quantity",
     "close": "Close cart",
     "error": "Something went wrong. Please try again."
+  },
+  "contact": {
+    "form": {
+      "name": "YOUR NAME",
+      "name_placeholder": "Enter your name...",
+      "email": "YOUR MAIL",
+      "email_placeholder": "Enter your mail...",
+      "message": "YOUR MESSAGE",
+      "message_placeholder": "Your message...",
+      "submit": "SUBMIT",
+      "success": "Your message was sent successfully!"
+    }
   }
 }

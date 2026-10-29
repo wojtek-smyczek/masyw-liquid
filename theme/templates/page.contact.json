@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-contact",
+      "blocks": {
+        "image-1": { "type": "image", "settings": {} },
+        "image-2": { "type": "image", "settings": {} },
+        "image-3": { "type": "image", "settings": {} }
+      },
+      "block_order": ["image-1", "image-2", "image-3"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

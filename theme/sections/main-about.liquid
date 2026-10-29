@@ -1,0 +1,62 @@
+{%- assign media_class = 'absolute inset-0 h-full w-full object-cover' -%}
+
+<section class="flex h-full flex-col bg-black text-white md:flex-row">
+  {%- comment -%} LEWA {%- endcomment -%}
+  <div class="order-2 flex flex-col gap-1 md:order-1 md:flex-1">
+    {%- for block in section.blocks -%}
+      <div
+        class="relative h-screen w-full"
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.image != blank -%}
+          {{
+            block.settings.image
+            | image_url: width: 2400
+            | image_tag:
+              class: media_class,
+              alt: '',
+              widths: '800, 1200, 1600, 2000, 2400',
+              sizes: '(min-width: 768px) 50vw, 100vw',
+              loading: 'lazy'
+          }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: media_class }}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} PRAWA — tekst z treści strony (Sklep online → Strony) {%- endcomment -%}
+  <div class="relative order-1 flex w-full pb-10 pl-3 md:sticky md:top-0 md:order-2 md:h-screen md:flex-1 md:pt-0">
+    <div class="top-3 flex min-h-screen flex-col justify-center">
+      <h1 class="text-7xl">{{ section.settings.heading }}</h1>
+
+      <div class="grid grid-cols-1">
+        <div>{{ page.content }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "STORY" },
+    {
+      "type": "paragraph",
+      "content": "The story text is the page content — edit it under Online Store → Pages."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [{ "type": "image_picker", "id": "image", "label": "Image" }]
+    }
+  ]
+}
+{% endschema %}

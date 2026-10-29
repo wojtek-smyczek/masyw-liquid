@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-about",
+      "blocks": {
+        "image-1": { "type": "image", "settings": {} }
+      },
+      "block_order": ["image-1"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
