@@ -1,0 +1,64 @@
+{%- paginate collection.products by section.settings.products_per_page -%}
+  <section class="min-h-screen w-full bg-white">
+    <div class="bg-black px-3 pt-20 pb-3 text-white">
+      <h1 class="text-7xl">{{ collection.title }}</h1>
+    </div>
+
+    <div class="grid grid-cols-1 gap-1 bg-white md:grid-cols-3">
+      {%- for product in collection.products -%}
+        {% render 'product-card', product: product %}
+      {%- else -%}
+        <p class="product-masyw p-3">{{ 'collections.empty' | t }}</p>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav
+        class="flex justify-between p-3 text-black"
+        aria-label="{{ 'collections.pagination' | t }}"
+      >
+        {%- if paginate.previous -%}
+          <a
+            href="{{ paginate.previous.url }}"
+            class="link-masyw-desktop"
+          >
+            {{- 'collections.previous' | t -}}
+          </a>
+        {%- else -%}
+          <span></span>
+        {%- endif -%}
+        <span class="product-masyw">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+        {%- if paginate.next -%}
+          <a
+            href="{{ paginate.next.url }}"
+            class="link-masyw-desktop"
+          >
+            {{- 'collections.next' | t -}}
+          </a>
+        {%- else -%}
+          <span></span>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 6,
+      "max": 48,
+      "step": 3,
+      "default": 24
+    }
+  ]
+}
+{% endschema %}

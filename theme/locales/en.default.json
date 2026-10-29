@@ -34,5 +34,16 @@
       "submit": "SUBMIT",
       "success": "Your message was sent successfully!"
     }
+  },
+  "general": {
+    "404": {
+      "text": "THIS PAGE DOES NOT EXIST"
+    }
+  },
+  "collections": {
+    "empty": "NO OBJECTS HERE YET",
+    "pagination": "Pagination",
+    "previous": "Previous.",
+    "next": "Next."
   }
 }

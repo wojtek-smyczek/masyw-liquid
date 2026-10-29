@@ -1,0 +1,13 @@
+<section class="flex min-h-screen w-full flex-col gap-3 bg-black px-3 pt-20 pb-10 text-white">
+  <h1 class="text-7xl">{{ page.title }}</h1>
+  <div class="max-w-3xl">{{ page.content }}</div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}
