@@ -1,0 +1,181 @@
+<script src="{{ 'product.js' | asset_url }}" defer></script>
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign coming_soon = false
+  if product.tags contains 'coming-soon'
+    assign coming_soon = true
+  endif
+  assign can_buy = false
+  if current_variant.available and coming_soon == false
+    assign can_buy = true
+  endif
+  assign media_class = 'absolute inset-0 h-full w-full object-cover'
+-%}
+
+<section class="flex min-h-screen flex-col bg-black pt-20 text-white md:flex-row md:pt-0">
+  {%- comment -%} LEWA KOLUMNA — zdjęcia {%- endcomment -%}
+  <div class="order-2 flex flex-col gap-1 md:order-1 md:flex-1">
+    {%- for media in product.media -%}
+      {%- liquid
+        if forloop.first
+          assign loading = 'eager'
+          assign priority = 'high'
+        else
+          assign loading = 'lazy'
+          assign priority = 'auto'
+        endif
+      -%}
+      <div class="relative h-screen w-full">
+        {{
+          media.preview_image
+          | image_url: width: 2400
+          | image_tag:
+            class: media_class,
+            alt: media.alt | default: product.title,
+            widths: '800, 1200, 1600, 2000, 2400',
+            sizes: '(min-width: 768px) 50vw, 100vw',
+            loading: loading,
+            fetchpriority: priority
+        }}
+      </div>
+    {%- else -%}
+      <div class="relative h-screen w-full">
+        {{ 'product-1' | placeholder_svg_tag: media_class }}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} PRAWA KOLUMNA — szczegóły {%- endcomment -%}
+  <masyw-product
+    class="relative order-1 flex w-full flex-col pb-10 pl-3 md:sticky md:top-0 md:order-2 md:h-screen md:flex-1"
+    data-coming-soon="{{ coming_soon }}"
+    data-label-add="{{ 'products.product.add_to_cart' | t | escape }}"
+    data-label-sold-out="{{ 'products.product.sold_out' | t | escape }}"
+    data-label-unavailable="{{ 'products.product.unavailable' | t | escape }}"
+    data-label-adding="{{ 'products.product.adding' | t | escape }}"
+    data-label-added="{{ 'products.product.added' | t | escape }}"
+  >
+    <div class="relative flex flex-col justify-center md:top-0 md:h-screen">
+      <div class="top-3 flex flex-row gap-10">
+        <span>{{ section.settings.breadcrumb }}</span>
+        <a
+          href="{{ routes.root_url }}#products"
+          class="z-50 cursor-pointer"
+          aria-label="{{ 'products.product.close' | t }}"
+        >
+          [X]
+        </a>
+      </div>
+
+      <h1 class="text-7xl">{{ product.title }}</h1>
+      <div class="pb-5 font-light uppercase">{{ product.description }}</div>
+
+      <div>
+        <div class="grid grid-cols-2">
+          <span class="text-gray-500">MATERIAL</span>
+          <span>{{ product.metafields.custom.materials.value | default: 'N/A' }}</span>
+
+          <span class="text-gray-500">DIMENSIONS</span>
+          <span>{{ product.metafields.custom.dimensions.value | default: 'N/A' }}</span>
+
+          <span class="text-gray-500">DELIVERY</span>
+          <span>{{ product.metafields.custom.delivery.value | default: 'N/A' }}</span>
+
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <span class="text-gray-500">{{ option.name | upcase }}</span>
+              <fieldset
+                class="flex flex-wrap gap-x-3"
+                data-option-index="{{ forloop.index0 }}"
+              >
+                <legend class="sr-only">{{ option.name }}</legend>
+                {%- for value in option.values -%}
+                  <label class="cursor-pointer underline-offset-4 hover:underline has-checked:underline">
+                    <input
+                      type="radio"
+                      class="sr-only"
+                      name="{{ section.id }}-option-{{ forloop.parentloop.index }}"
+                      value="{{ value.name | escape }}"
+                      {% if value.selected %}
+                        checked
+                      {% endif %}
+                    >
+                    {{- value.name | upcase -}}
+                  </label>
+                {%- endfor -%}
+              </fieldset>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <span class="text-gray-500">PRICE</span>
+          <span data-price>{{ current_variant.price | money_with_currency }}</span>
+        </div>
+
+        {%- form 'product', product, data-product-form: '' -%}
+          <input
+            type="hidden"
+            name="id"
+            value="{{ current_variant.id }}"
+          >
+          <button
+            type="submit"
+            class="cursor-pointer disabled:cursor-not-allowed"
+            {% unless can_buy %}
+              disabled
+            {% endunless %}
+          >
+            {%- if can_buy -%}
+              {{ 'products.product.add_to_cart' | t }}
+            {%- else -%}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </button>
+          <p
+            class="text-red-500"
+            role="alert"
+            data-error
+          ></p>
+        {%- endform -%}
+      </div>
+    </div>
+
+    <script type="application/json" data-variants>
+      [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id }},
+            "available": {{ variant.available | json }},
+            "options": {{ variant.options | json }},
+            "price": {{ variant.price | money_with_currency | json }}
+          }
+          {%- unless forloop.last %},{% endunless -%}
+        {%- endfor -%}
+      ]
+    </script>
+  </masyw-product>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "breadcrumb",
+      "label": "Collection label",
+      "default": "MASYW / COLLECTION 01"
+    },
+    {
+      "type": "paragraph",
+      "content": "MATERIAL, DIMENSIONS and DELIVERY come from the product metafields custom.materials, custom.dimensions and custom.delivery."
+    }
+  ]
+}
+{% endschema %}

@@ -1,1 +1,12 @@
-{}
+{
+  "products": {
+    "product": {
+      "add_to_cart": "ADD TO CART",
+      "sold_out": "OUT OF STOCK",
+      "unavailable": "UNAVAILABLE",
+      "adding": "ADDING…",
+      "added": "ADDED TO CART",
+      "close": "Back to products"
+    }
+  }
+}
