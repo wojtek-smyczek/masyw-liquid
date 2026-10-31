@@ -1,7 +1,11 @@
 <script src="{{ 'header.js' | asset_url }}" defer></script>
 
 <masyw-header>
-  <nav class="fixed top-0 left-0 z-500 flex w-full items-center justify-between p-3 text-white">
+  {%- comment -%}
+    mix-blend-difference: white text turns black over light backgrounds.
+    The mobile menu panel lives outside <nav> so it isn't blended.
+  {%- endcomment -%}
+  <nav class="fixed top-0 left-0 z-500 flex w-full items-center justify-between p-3 text-white mix-blend-difference">
     <a
       class="relative z-50 cursor-pointer text-2xl tracking-tight transition-all duration-200 hover:scale-105 md:text-2xl"
       href="{{ routes.root_url }}"
@@ -49,30 +53,30 @@
         {{- section.settings.menu_label -}}
       </button>
     </div>
-
-    <div
-      id="MobileMenu"
-      class="bg-masyw-dark absolute top-0 left-0 flex h-screen w-full flex-col justify-center"
-      data-menu-panel
-      hidden
-    >
-      {%- for block in section.blocks -%}
-        {%- liquid
-          if block.type == 'products_link'
-            assign href = routes.root_url | append: '#products'
-          else
-            assign href = block.settings.url
-          endif
-        -%}
-        <a
-          href="{{ href }}"
-          class="link-masyw"
-        >
-          {{- block.settings.mobile_label -}}
-        </a>
-      {%- endfor -%}
-    </div>
   </nav>
+
+  <div
+    id="MobileMenu"
+    class="bg-masyw-dark fixed top-0 left-0 z-400 flex h-screen w-full flex-col justify-center text-white"
+    data-menu-panel
+    hidden
+  >
+    {%- for block in section.blocks -%}
+      {%- liquid
+        if block.type == 'products_link'
+          assign href = routes.root_url | append: '#products'
+        else
+          assign href = block.settings.url
+        endif
+      -%}
+      <a
+        href="{{ href }}"
+        class="link-masyw"
+      >
+        {{- block.settings.mobile_label -}}
+      </a>
+    {%- endfor -%}
+  </div>
 </masyw-header>
 
 {% schema %}
