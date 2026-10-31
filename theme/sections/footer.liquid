@@ -28,6 +28,23 @@
     {%- endfor -%}
   </div>
 
+  {%- comment -%} Dane firmy i regulaminy — wymagane prawnie (Ustawienia → Zasady) {%- endcomment -%}
+  <div class="flex flex-col gap-1 pt-10 md:flex-row md:justify-between">
+    <div class="product-masyw">
+      &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+      {%- if section.settings.company_info != blank %} · {{ section.settings.company_info }}{% endif -%}
+    </div>
+    {%- if shop.policies.size > 0 -%}
+      <ul class="flex flex-wrap gap-x-4">
+        {%- for policy in shop.policies -%}
+          <li class="product-masyw">
+            <a href="{{ policy.url }}">{{ policy.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
   <div class="w-full">
     <div class="animate-scroll overflow-hidden whitespace-nowrap">
       {%- for i in (1..3) -%}
@@ -52,6 +69,12 @@
       "id": "marquee_text",
       "label": "Scrolling text",
       "default": "MASYW-MASYW-MASYW-MASYW-"
+    },
+    {
+      "type": "text",
+      "id": "company_info",
+      "label": "Company details",
+      "info": "Legal name, address and NIP, e.g. MASYW Sp. z o.o. · ul. Przykładowa 1, 00-000 Kraków · NIP 0000000000"
     }
   ],
   "blocks": [

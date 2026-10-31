@@ -12,6 +12,7 @@
     {%- endif %}
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="icon" href="{{ 'favicon.ico' | asset_url }}">
+    {% render 'meta-tags' %}
 
     {{ 'inter-latin-wght-normal.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
